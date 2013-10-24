@@ -155,7 +155,6 @@ class homura.controllers.LocationController
       return
     change = null
     if (val == 1 && @isDown(rest)) || (val == -1 && @isUp(rest))
-      console.log ("change is true")
       change = "1"
     @http(
         method: "GET"

@@ -1,0 +1,44 @@
+!!! 5
+// https://github.com/wakarimasenco/madoka-meetup
+html(ng-app="homura-meetup")
+  head
+    title M/a/doka Meetup
+    link(rel='stylesheet', href='//fonts.googleapis.com/css?family=Raleway:400,700,100|Lato:300,400,700,900')
+    link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css')
+    link(rel='stylesheet', href='//netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='icon', href='/favicon.ico',type="image/x-icon")
+  body
+
+    nav.navbar.navbar-default(role="navigation")
+        .container
+            .navbar-header
+                a.navbar-brand(href="/") M/a/DOKA
+            .collapse.navbar-collapse.navbar-ex1-collapse
+                ul.nav.navbar-nav
+                    li
+                        a(href="http://www.madokamagicausa.com/rebellion/", target="_blank") Official Site
+                    li
+                        a(href="http://www.youtube.com/watch?v=oHj11IWgKbg", target="_blank") Trailer
+                    li
+                        a(href="mailto:killachaos0@gmail.com", target="_blank") Email
+                    li
+                        a(href="https://github.com/wakarimasenco/madoka-meetup", target="_blank") Github
+    .jumbo.jumbotron
+        h1 Puella Magi Madoka Magica
+        h2 Part 3: Rebellion
+        p.
+            US /a/non December Meetup Organizer
+    block content
+    script(src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js')
+    script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular.min.js')
+    script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular-resource.min.js')
+    script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular-route.min.js')
+    script(src=' //cdnjs.cloudflare.com/ajax/libs/moment.js/2.2.1/moment.min.js')
+    script(src='//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js')
+
+
+    != js("homura.js")
+    != js("app.js")
+

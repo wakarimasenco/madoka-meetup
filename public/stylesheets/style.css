@@ -1,0 +1,165 @@
+
+body {
+	background-color: #333743;
+}
+h1, h2, h3, h4 {
+	font-family: "Raleway"
+}
+
+.navbar-brand {
+	font-family: "Raleway";
+	color: #333 !important;
+	font-size: 24px;
+}
+.navbar {
+	font-family: "Lato";
+	border: none;
+	margin-bottom:0;
+	border-radius: 0;
+	background-color: #fefefe;
+}
+.jumbo {
+	height: 200px;
+	background-image: url("/images/homura.jpg");
+	border-radius: 0;
+	color: #FFF;
+	border-bottom: 1px solid #525252;
+	border-top: 1px solid #333;
+	padding-top: 36px;
+	padding-bottom: 36px;
+	margin-bottom:0;
+}
+.jumbo h1 {
+	margin:0;
+}
+.jumbo h2 {
+	margin:0;
+}
+.jumbo p {
+	font-family: "Lato";
+}
+.header {
+	background-color: #CECECE;
+	color:#111;
+	height: 50px;
+	padding-top: 8px;
+}
+.header h2 {
+	margin:0;
+	text-transform: uppercase;
+}
+
+.simple-card h4 {
+	margin: 0;
+}
+
+.card-list {
+	padding: 0;
+	list-style: none;
+	vertical-align: top;
+	margin: 0 -16px 0 0;
+	font-size: 0;
+	padding-top: 25px;
+}
+.simple-card hr {
+	margin:0;
+}
+.simple-card .anons {
+	border-right: 1px solid #CECECE;
+	padding: 8px;
+}
+.simple-card .b {
+	padding-top: 8px;
+	padding-bottom: 7px;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+.simple-card .top > address {
+	margin-bottom: 6px;
+}
+.simple-card .b {
+	margin-right: 3px;
+	border-left: 1px solid #CECECE;
+}
+.simple-card .b:first-child {
+	margin-right: 0;
+	border-left: 0 solid #000;
+}
+.simple-card .b:last-child {
+	margin-right: 0;
+	border-left: 0 solid #000;
+}
+.simple-card .anons > i {
+	vertical-align: middle;
+	margin-right: 5px;
+}
+.simple-card .anons > em {
+	font-size: 1.2em;
+}
+.simple-card .top {
+	padding-top: 8px;
+	padding-left: 16px;
+	padding-right: 8px;
+}
+.simple-card .top .title {
+	margin-bottom: 3px;
+}
+.simple-card .top ul {
+	margin-bottom: 6px;
+	height: 82px;
+	overflow-y: scroll;
+}
+.card-list > li {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
+	border-radius: 4px;
+	border: 1px solid #444;
+	background: #fff;
+	font-size: 12px;
+	margin: 0 18px 52px 0;
+	padding: 0;
+	display: inline-block;
+	zoom: 1;
+	vertical-align: top;
+	width: 23%;
+}
+
+@media (max-width: 767px) {
+	.card-list > li {
+		margin: 0 18px 32px 0;
+		width: 30%;
+	}
+}
+@media (min-width: 768px) and (max-width: 991px) {
+	.card-list > li {
+		margin: 0 18px 32px 0;
+		width: 30.5%;
+	}
+}
+
+.section {
+	border-radius: 4px;
+	background: #fff;
+	margin: 12px;
+	padding-top: 4px;
+	padding-bottom: 10px;
+}
+
+.section table {
+	text-align: center;
+}
+
+.upvote {
+	padding-right: 10px;
+}
+.novote {
+	color: #666;
+}
+.upvote:hover {
+	color: #468847;
+}
+.downvote:hover {
+	color: #b94a48;
+}

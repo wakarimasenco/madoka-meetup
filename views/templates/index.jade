@@ -1,0 +1,32 @@
+.header
+    .container
+        h2 Locations
+.container
+    ul.card-list
+        li("ng-repeat"="location in locationlist.locations | orderBy:locationlist.orderBy")
+            .simple-card
+                .top
+                    .title
+                        h4 {{ location.name }}
+                        em {{ location.city }}, {{ location.state }}
+                    strong Times
+                    ul.list-unstyled(style="margin-left: 16px;")
+                        li("ng-repeat"="time in location.times")
+                            {{locationlist.parse(time.t) | date:'EEE dd MMM. @ hh:mm a'}}
+                    address
+                        {{ location.address }}
+                hr
+                .bottom
+                    .pull-left.anons
+                        i.fa.fa-2x.fa-user
+                        em {{ location.n_anon }}
+
+                    .pull-right.b
+                        a(href="/{{ location._id }}")
+                            i.fa.fa-2x.fa-plus
+                    .pull-right.b
+                        a(href="http://maps.google.com/?q={{ locationlist.urlEncode(location.address) }}", target="_blank")
+                            i.fa.fa-2x.fa-map-marker
+                    .pull-right.b
+                        a(href="{{ location.tickets }}", ng-class="{\"text-muted\": !location.tickets}", ng-hide="!location.tickets", target="_blank")
+                            i.fa.fa-2x.fa-ticket

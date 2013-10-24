@@ -1,0 +1,148 @@
+.header
+    .container
+        h2 {{ location.location.name }} - {{ location.location.city }}
+.container
+    .row
+        .col-md-12.section
+            h3 /a/nons
+            table.table.table-bordered.table-hover
+                thead
+                    tr
+                        th Email
+                        th Age
+                        th Pre
+                        th Post
+                        th Misc
+                        th
+                tbody
+                    tr("ng-repeat"="anon in location.location.anons")
+                        td {{ anon.email }}
+                        td {{ anon.age }}
+                        td.text-success(ng-hide="!anon.lunch")
+                            i.fa.fa-check-circle.fa-lg
+                        td.text-danger(ng-hide="!!anon.lunch")
+                            i.fa.fa-times-circle.fa-lg
+                        td.text-success(ng-hide="!anon.dinner")
+                            i.fa.fa-check-circle.fa-lg
+                        td.text-danger(ng-hide="!!anon.dinner")
+                            i.fa.fa-times-circle.fa-lg
+                        td {{ anon.misc }}
+                        td
+                            a(href="#", ng-click="location.removeAnon(anon)") &times;
+            form.well(ng-submit="location.addAnon()")
+                .row
+                    .col-md-6
+                        .form-group
+                            label(for='shojoemail') Email address
+                            input#shojoemail.form-control(type='email', placeholder='Email', "ng-model" = "location.anonEmail")
+                        .form-group
+                            label(for='shojoage') Age
+                            input#shojoage.form-control(type='number', placeholder='Age', "ng-model" = "location.anonAge")
+                        .checkbox
+                            label
+                                input#premovie(type='checkbox', "ng-model" = "location.anonLunch")
+                                | Pre-Movie / Lunch
+                        .checkbox
+                            label
+                                input#postmovie(type='checkbox', "ng-model" = "location.anonDinner")
+                                | Post-Movie / Dinner
+                    .col-md-6
+                        .form-group
+                            label(for='misc') Misc
+                            textarea#misc.form-control(rows="4", "ng-model" = "location.anonMisc")
+                .row
+                    .col-md-3.col-md-offset-9
+                        button.btn.btn-primary.btn-lg.pull-right(type='submit') Add
+    .row
+        .col-md-12.section
+            h3 Restaurants
+            table.table.table-bordered.table-hover
+                thead
+                    tr
+                        th Name
+                        th Lunch/Dinner
+                        th Score
+                        th Misc
+                        th
+                        th
+                        th
+                tbody
+                    tr("ng-repeat"="rest in location.location.restaurants | orderBy:rest.score")
+                        td {{ rest.name }} {{ rest.ftype }}
+                        td(ng-hide="!!rest.lunch") Lunch
+                        td(ng-hide="!rest.lunch") Dinner
+                        td {{ rest.score | number:4 }}
+                        td {{ rest.misc }}
+                        td
+                            a.upvote(href="#", ng-class="{\"text-success\": location.isUp(rest), \"novote\": !(location.isUp(rest))}", ng-click="location.doVote(rest, 1)")
+                                i.fa.fa-arrow-circle-up.fa-lg
+                            a.downvote(href="#", ng-class="{\"text-danger\": location.isDown(rest), \"novote\": !(location.isDown(rest))}", ng-click="location.doVote(rest, -1)")
+                                i.fa.fa-arrow-circle-down.fa-lg
+                        td
+                            button.btn.btn-default(type='button', ng-click="location.doEditRest(rest)") Edit
+                        td
+                            a(href="#", ng-click="location.removeRestaurant(rest)") &times;
+            form.well(ng-submit="(!location.isEditRest) ? location.addRestaurant() : location.editRestaurant()")
+                .row
+                    .col-md-6
+                        .form-group
+                            label(for='restname') Name
+                            input#restname.form-control(type='text', placeholder='Name', "ng-model" = "location.restName")
+                        .radio
+                            label
+                                input(type='radio', name='lunchdinner', value='lunch', "ng-model" = "location.restType", checked=true)
+                                | Lunch
+                        .radio
+                            label
+                                input(type='radio', name='lunchdinner', value='dinner', "ng-model" = "location.restType")
+                                | Dinner
+                    .col-md-6
+                        .form-group
+                            label(for='miscrest') Misc
+                            textarea#miscrest.form-control(rows="3",  "ng-model" = "location.restMisc")
+                .row
+                    .col-md-3.col-md-offset-9
+                        button.btn.btn-primary.btn-lg.pull-right(type='submit', ng-show="!location.isEditRest") Add
+                        button.btn.btn-primary.btn-lg.pull-right(type='submit', ng-show="!!location.isEditRest") Edit
+    .row
+        .col-md-12.section
+            h3 Rides
+            table.table.table-bordered.table-hover
+                thead
+                    tr
+                        th Email
+                        th Location
+                        th Capacity
+                        th Misc
+                        th
+                        th
+                tbody
+                    tr("ng-repeat"="ride in location.location.rides")
+                        td {{ ride.email }}
+                        td {{ ride.location }}
+                        td {{ ride.capacity }}
+                        td {{ ride.misc }}
+                        td
+                            button.btn.btn-default(type='button', ng-click="location.doEditRide(ride)") Edit
+                        td
+                            a(href="#", ng-click="location.removeRide(ride)") &times;
+            form.well(ng-submit="(!location.isEditRide) ? location.addRide() : location.editRide()")
+                .row
+                    .col-md-6
+                        .form-group
+                            label(for='rideremail') Email address
+                            input#rideremail.form-control(type='email', placeholder='Email', "ng-model" = "location.rideEmail")
+                        .form-group
+                            label(for='riderloc') Location
+                            input#riderloc.form-control(type='text', placeholder='Location', "ng-model" = "location.rideLoc")
+                        .form-group
+                            label(for='ridercap') Capacity
+                            input#ridercap.form-control(type='number', placeholder='Capacity', "ng-model" = "location.rideCap")
+                    .col-md-6
+                        .form-group
+                            label(for='miscride') Misc
+                            textarea#miscride.form-control(rows="4", "ng-model" = "location.rideMisc")
+                .row
+                    .col-md-3.col-md-offset-9
+                        button.btn.btn-primary.btn-lg.pull-right(type='submit', ng-show="!location.isEditRide") Add
+                        button.btn.btn-primary.btn-lg.pull-right(type='submit', ng-show="!!location.isEditRide") Edit

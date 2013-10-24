@@ -43,9 +43,8 @@ app.configure ->
       next()
     app.use activeUser
 
-require("coffee-trace")
 app.configure "development", ->
-
+  require("coffee-trace")
   app.use express.errorHandler()
   app.set("host:mongo", "wakarimasen.co")
   app.set("host:redis", "localhost")
@@ -57,7 +56,11 @@ app.configure "production", ->
 
 api.v1.routes(app)
 
-app.get('/:location?', (req, res) -> res.render('index'));
+app.get('/:location?', (req, res, next) ->
+  if req.params.location == "favicon.ico"
+    next()
+    return
+  res.render('index'));
 app.get('/templates/:template', (req, res) ->
   t = req.params.template.replace(".html", ".jade")
   res.render("templates/#{t}"));

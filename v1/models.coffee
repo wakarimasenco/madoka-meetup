@@ -2,6 +2,8 @@ _ = require("underscore")
 ObjectID = require('mongodb').ObjectID
 MongoDb = require("mongodb")
 redis = require("redis")
+crypto = require('crypto')
+
 
 class Database
 
@@ -14,6 +16,16 @@ class BaseController
 
   constructor: (@db) ->
     @db.madoka = @db.mongo.db("madoka")
+
+  getIp: (req) ->
+    shasum = crypto.createHash('sha1');
+    shasum.update(req.ip);
+    return shasum.digest('hex')
+
+  checkIp: (req, ip) ->
+    shasum = crypto.createHash('sha1');
+    shasum.update(req.ip);
+    return shasum.digest('hex') == ip
 
 class LocationsController extends BaseController
 
@@ -84,6 +96,7 @@ class AnonsController extends BaseController
     location = req.params.location
     anonData = req.body
     anonData.l_id = location
+    anonData.ip = @getIp(req)
     @db.madoka.collection("locations").findOne({"_id":req.params.location}, (err, location) =>
       if err?
         res.json(400, {"error":err})
@@ -117,7 +130,7 @@ class AnonsController extends BaseController
     aid = new ObjectID.createFromHexString(req.params.id)
     anonData = req.body
     anonData.l_id = req.params.location
-    @db.madoka.collection("anons").update({"_id":aid, "l_id":req.params.location}, anonData, {safe:true}, (err) =>
+    @db.madoka.collection("anons").update({"_id":aid, "l_id":req.params.location, "ip":@getIp(req)}, anonData, {safe:true}, (err) =>
       if err?
         res.json(400, {"error":err})
         return
@@ -127,7 +140,7 @@ class AnonsController extends BaseController
   patchAnon: (req, res) =>
     aid = new ObjectID.createFromHexString(req.params.id)
     anonData = req.body
-    @db.madoka.collection("anons").update({"_id":aid, "l_id":req.params.location}, {"$set":anonData}, {safe:true}, (err) =>
+    @db.madoka.collection("anons").update({"_id":aid, "l_id":req.params.location, "ip":@getIp(req)}, {"$set":anonData}, {safe:true}, (err) =>
       if err?
         res.json(400, {"error":err})
         return
@@ -136,11 +149,12 @@ class AnonsController extends BaseController
 
   removeAnon: (req, res) =>
     aid = new ObjectID.createFromHexString(req.params.id)
-    @db.madoka.collection("anons").remove({"_id":aid, "l_id":req.params.location}, {safe:true}, (err) =>
-      @db.madoka.collection("locations").update({"_id":req.params.location}, {"$inc":{"n_anon":-1}}, {safe:false})
+    @db.madoka.collection("anons").remove({"_id":aid, "l_id":req.params.location, "ip":@getIp(req)}, {safe:true}, (err, nom) =>
       if err?
         res.json(400, {"error":err})
         return
+      if nom != 0
+        @db.madoka.collection("locations").update({"_id":req.params.location}, {"$inc":{"n_anon":-1}}, {safe:false})
       res.send(204)
     )
 
@@ -171,6 +185,7 @@ class RestaurantsController extends BaseController
     restData.up = 1
     restData.down = 0
     restData.score = @ci_lower_bound(1, 1)
+    restData.ip = @getIp(req)
     @db.madoka.collection("locations").findOne({"_id":req.params.location}, (err, location) =>
       if err?
         res.json(400, {"error":err})
@@ -203,7 +218,7 @@ class RestaurantsController extends BaseController
     rid = new ObjectID.createFromHexString(req.params.id)
     restData = req.body
     restData.l_id = req.params.location
-    @db.madoka.collection("restaurants").update({"_id":rid, "l_id":req.params.location}, restData, {safe:true}, (err) =>
+    @db.madoka.collection("restaurants").update({"_id":rid, "l_id":req.params.location, "ip":@getIp(req)}, restData, {safe:true}, (err) =>
       if err?
         res.json(400, {"error":err})
         return
@@ -213,7 +228,7 @@ class RestaurantsController extends BaseController
   patchRest: (req, res) =>
     rid = new ObjectID.createFromHexString(req.params.id)
     restData = req.body
-    @db.madoka.collection("restaurants").update({"_id":rid, "l_id":req.params.location}, {"$set":restData}, {safe:true}, (err) =>
+    @db.madoka.collection("restaurants").update({"_id":rid, "l_id":req.params.location, "ip":@getIp(req)}, {"$set":restData}, {safe:true}, (err) =>
       if err?
         res.json(400, {"error":err})
         return
@@ -222,7 +237,7 @@ class RestaurantsController extends BaseController
 
   removeRest: (req, res) =>
     rid = new ObjectID.createFromHexString(req.params.id)
-    @db.madoka.collection("restaurants").remove({"_id":rid, "l_id":req.params.location}, {safe:true}, (err) =>
+    @db.madoka.collection("restaurants").remove({"_id":rid, "l_id":req.params.location, "ip":@getIp(req)}, {safe:true}, (err, nom) =>
       if err?
         res.json(400, {"error":err})
         return
@@ -294,6 +309,7 @@ class RidesController extends BaseController
     location = req.params.location
     rideData = req.body
     rideData.l_id = location
+    rideData.ip = @getIp(req)
     @db.madoka.collection("locations").findOne({"_id":req.params.location}, (err, location) =>
       if err?
         res.json(400, {"error":err})
@@ -326,7 +342,7 @@ class RidesController extends BaseController
     rid = new ObjectID.createFromHexString(req.params.id)
     rideData = req.body
     rideData.l_id = req.params.location
-    @db.madoka.collection("rides").update({"_id":rid, "l_id":req.params.location}, rideData, {safe:true}, (err) =>
+    @db.madoka.collection("rides").update({"_id":rid, "l_id":req.params.location, "ip":@getIp(req)}, rideData, {safe:true}, (err) =>
       if err?
         res.json(400, {"error":err})
       res.send(204)
@@ -335,7 +351,7 @@ class RidesController extends BaseController
   patchRide: (req, res) =>
     rid = new ObjectID.createFromHexString(req.params.id)
     rideData = req.body
-    @db.madoka.collection("rides").update({"_id":rid, "l_id":req.params.location}, {"$set":rideData}, {safe:true}, (err) =>
+    @db.madoka.collection("rides").update({"_id":rid, "l_id":req.params.location, "ip":@getIp(req)}, {"$set":rideData}, {safe:true}, (err) =>
       if err?
         res.json(400, {"error":err})
         return
@@ -344,7 +360,7 @@ class RidesController extends BaseController
 
   removeRide: (req, res) =>
     rid = new ObjectID.createFromHexString(req.params.id)
-    @db.madoka.collection("rides").remove({"_id":rid, "l_id":req.params.location}, {safe:true}, (err) =>
+    @db.madoka.collection("rides").remove({"_id":rid, "l_id":req.params.location, "ip":@getIp(req)}, {safe:true}, (err) =>
       if err?
         res.json(400, {"error":err})
         return

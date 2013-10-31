@@ -26,6 +26,7 @@ app.configure ->
   app.set "port", process.env.PORT or 9001
   app.set "views", __dirname + "/views"
   app.set "view engine", "jade"
+  app.enable "trust proxy"
   app.use express.logger("dev")
   app.use express.bodyParser()
   app.use express.methodOverride()

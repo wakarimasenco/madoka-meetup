@@ -68,9 +68,9 @@
                         th
                 tbody
                     tr("ng-repeat"="rest in location.location.restaurants | orderBy:rest.score")
-                        td {{ rest.name }} {{ rest.ftype }}
-                        td(ng-hide="!!rest.lunch") Lunch
-                        td(ng-hide="!rest.lunch") Dinner
+                        td {{ rest.name }}
+                        td(ng-show="!!location.isLunch(rest)") Lunch
+                        td(ng-show="!location.isLunch(rest)") Dinner
                         td {{ rest.score | number:4 }}
                         td {{ rest.misc }}
                         td

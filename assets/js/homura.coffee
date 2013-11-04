@@ -147,6 +147,9 @@ class homura.controllers.LocationController
     else
       return false
 
+  isLunch: (rest) ->
+    return rest.ftype == "lunch"
+
   doVote: (rest, val) ->
     vote = if val == "1" || val == 1 then "up" else "down"
     if val == 1 && @isUp(rest)
